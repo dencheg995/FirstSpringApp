@@ -6,15 +6,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.stories.models.User;
 import ru.kuznetsov.stories.services.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class AuthProviderImpl implements AuthenticationProvider {
@@ -33,11 +30,10 @@ public class AuthProviderImpl implements AuthenticationProvider {
             throw new UsernameNotFoundException("User not found");
         }
         String password = authentication.getCredentials().toString();
-        if(!passwordEncoder.matches(password,user.getPassword())){
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Incorrect credentials");
         }
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        return new UsernamePasswordAuthenticationToken(user.getLogin(),null,authorities);
+        return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
     }
 
     @Override

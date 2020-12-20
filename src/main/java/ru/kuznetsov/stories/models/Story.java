@@ -32,7 +32,7 @@ public class Story {
     }
 
     @Column(nullable = true)
-    private Double raiting;
+    private Double rating;
 
     @Column(nullable = true, name="marks_amount")
     private Long amountOfMarks;
@@ -99,12 +99,12 @@ public class Story {
         this.shortDesc = short_desc;
     }
 
-    public Double getRaiting() {
-        return raiting;
+    public Double getRating() {
+        return rating;
     }
 
-    public void setRaiting(Double raiting) {
-        this.raiting = raiting;
+    public void setRating(Double raiting) {
+        this.rating = raiting;
     }
 
     public Long getAmountOfMarks() {

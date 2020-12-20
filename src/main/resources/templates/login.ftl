@@ -1,19 +1,19 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Вход</title>
-</head>
-<body>
-<form action="/login" method="post">
-    <input type="text" name="login" placeholder="Введите логин"><br>
-    <input type="password" name="password" placeholder="Введите пароль"><br>
-    <input type="submit">
-</form>
-<#if error??>
-    <p>Неверный логин или пароль</p>
-</#if>
-</body>
-</html>
+<#import "parts/common.ftl" as structure>
+
+<@structure.page>
+    <form action="/login" method="post">
+        <div class="form-group">
+            <label for="inputLogin">Логин:</label>
+            <input type="text" class="form-control col-6" id="inputLogin" name="login">
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" class="form-control col-6" id="password" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary col-2">Войти</button>
+    </form>
+    <#if error??>
+        <p style="color:red;">Неверный логин или пароль</p>
+    </#if>
+    <p><a href="/reg">Нет аккаунта?</a></p>
+</@structure.page>

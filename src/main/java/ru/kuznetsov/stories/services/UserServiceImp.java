@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
-import ru.kuznetsov.stories.dao.RoleDao;
 import ru.kuznetsov.stories.dao.UserDao;
-import ru.kuznetsov.stories.models.Role;
 import ru.kuznetsov.stories.models.User;
 
 import java.util.*;
@@ -42,11 +39,6 @@ public class UserServiceImp implements UserService{
     @Override
     public User findByEmail(String email) {
         return userDao.findByEmail(email).orElse(null);
-    }
-
-    @Override
-    public List<User> getUserList() {
-        return userDao.findAll();
     }
 
     @Override

@@ -18,21 +18,21 @@ public class RegistrationController {
     private UserService userService;
 
     @Autowired
-    public RegistrationController(UserService userService){
+    public RegistrationController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/reg")
     public String regGet(Model model) {
-        model.addAttribute("user",new User());
+        model.addAttribute("user", new User());
         return "reg";
     }
 
     @PostMapping("/reg")
     public String regPost(@Valid User user, BindingResult result, Model model) {
         userService.validate(user, result);
-        if(!result.hasErrors()){
-            model.addAttribute("noErrors",true);
+        if (!result.hasErrors()) {
+            model.addAttribute("noErrors", true);
             userService.save(user);
         }
         return "reg";

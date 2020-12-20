@@ -25,9 +25,4 @@ public class GenreServiceImp implements GenreService {
     public Genre getById(Long id) {
         return genreDao.getOne(id);
     }
-
-    @Override
-    public Genre getByName(String name) {
-        return genreDao.findByName(name);
-    }
 }

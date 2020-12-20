@@ -2,13 +2,10 @@ package ru.kuznetsov.stories.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import ru.kuznetsov.stories.dao.StoryDao;
-import ru.kuznetsov.stories.models.Comment;
 import ru.kuznetsov.stories.models.Genre;
 import ru.kuznetsov.stories.models.Story;
 
@@ -39,7 +36,7 @@ public class StoryServiceImp implements StoryService {
     @Override
     public void save(Story story) {
         story.setAmountOfMarks(0L);
-        story.setRaiting(0d);
+        story.setRating(0d);
         story.setPublishDate(new Date());
         storyDao.save(story);
     }
@@ -51,7 +48,6 @@ public class StoryServiceImp implements StoryService {
 
     @Override
     public Page<Story> findFiltered(String authorLogin, String storyTitle, String genreId, Pageable pageable) {
-        System.out.println(authorLogin + " " + storyTitle + " " + genreId);
         return storyDao.findFiltered(authorLogin,storyTitle,genreId,pageable);
     }
 
@@ -64,7 +60,7 @@ public class StoryServiceImp implements StoryService {
 
     @Override
     public Story getByTitle(String title) {
-        return storyDao.findByTitle(title);
+        return storyDao.getFirstByTitle(title).orElse(null);
     }
 
     @Override
@@ -92,14 +88,19 @@ public class StoryServiceImp implements StoryService {
 
 
     @Override
-    public void changeRaiting(Story story) {
+    public void changeRating(Story story) {
         Long storyId = story.getId();
         Double sum = userStoryMarkService.findSumByStoryId(storyId);
         Long amount = userStoryMarkService.findAmountOfMarksByStoryId(storyId);
         System.out.println(sum + " " + amount);
-        story.setRaiting(sum/amount);
+        story.setRating(sum/amount);
         story.setAmountOfMarks(amount);
         storyDao.save(story);
+    }
+
+    @Override
+    public Page<Story> getBestStories(Pageable pageable) {
+        return storyDao.getBestStories(pageable);
     }
 
     private void filterByAuthor(List<Story> stories, String author) {

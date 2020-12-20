@@ -1,6 +1,5 @@
 package ru.kuznetsov.stories.services;
 
-import org.springframework.stereotype.Service;
 import ru.kuznetsov.stories.models.Story;
 import ru.kuznetsov.stories.models.User;
 

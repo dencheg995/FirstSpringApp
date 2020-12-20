@@ -1,49 +1,65 @@
-<#import "pager.ftl" as p>
-<#assign  security=JspTaglibs["http://www.springframework.org/security/tags"] />
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Истории</title>
-</head>
-<body>
-<h2>${story.title}</h2>
-<p>Автор: ${story.author.login}</p>
-<div class="full-story">
-    ${story.fullText}
-</div>
-<div class="mark-section">
-    <div class="story-mark"></div>
-    <div class="has-mark">Вы оценили данный рассказ: <#if mark ??>${mark}</#if></div>
-    <div class="add-mark">
-        <p>Оценить рассказ:</p>
-        <form action = "/stories/${story.id}/setMark" method="post">
-            <input type="number" name="mark" min="1" max="5" step="1" value="1">
-            <input type="submit" value="Оценить">
-        </form>
-    </div>
-</div>
-<div class="comment-section">
-    <div class="comment-add">
-        <form action="/stories/${story.id}/comment" method="post">
-            <input type="text" name="text" placeholder="Оставить комментарий">
-            <input type="submit" value="Отправить">
-        </form>
-    </div>
-    <div class="comment-list">
-        <#list comments.content as comment>
-            <div class="comment-wrap" style="border:1px solid black; margin: 3px">
-                <h3>${comment.user.login}</h3>
-                <p>${comment.text}</p>
-                <p>${comment.date}</p>
-                <p><a href="/stories/${story.id}/comment/delete/${comment.id}">Удалить</a></p>
-            </div>
+<#import "parts/pager.ftl" as p>
+<#import "parts/common.ftl" as structure>
+<#include "parts/security.ftl">
+<@structure.page>
+    <h2 align="center">${story.title}</h2>
+    <p><b>Автор: ${story.author.login}</b></p>
+    <p>
+        Жанр: <#list story.genres as genre>
+            ${genre.getName()}<#if genre_has_next>, </#if>
         </#list>
-        <@p.pager url comments></@>
+    </p>
+    <p>${story.publishDate}</p>
+    <div class="full-story">
+        ${story.fullText?replace("\r\n","<br>")}
     </div>
-</div>
-</body>
-</html>
+    <br>
+    <h3>Рейтинг рассказа: ${story.rating}, количество оценок: ${story.amountOfMarks}</h3>
+    <#if name!="unknown">
+        <div class="mark-section" style="border-bottom: 1px solid gray;">
+            <div class="story-mark"></div>
+            <#if mark ??>
+                <div class="has-mark">Вы оценили данный рассказ: ${mark}</div></#if>
+            <div class="add-mark">
+                <#if mark ??>
+                    <p>Изменить оценку</p>
+                <#else>
+                    <p>Оценить рассказ:</p>
+                </#if>
+                <form action="/stories/${story.id}/setMark" method="post">
+                    <input type="number" class="form-control" name="mark" min="1" max="5" step="1" value="1">
+                    <button type="submit" class="btn btn-primary col-2 mt-2 mb-2">Оценить</button>
+                </form>
+            </div>
+        </div>
+    </#if>
+    <br>
+    <h3 style="border-bottom: 1px solid gray;">Комментарии: ${comments.totalElements}</h3>
+    <div class="comment-section">
+        <#if name!="unknown">
+            <div class="comment-add" style="border-bottom: 1px solid gray;">
+                <form action="/stories/${story.id}/comment" method="post">
+                    <textarea name="text" class="form-control"></textarea>
+                    <button type="submit" class="btn btn-primary col-4 mt-2 mb-2">Оставить комментарий</button>
+                </form>
+            </div>
+        </#if>
+        <div class="comment-list">
+            <#list comments.content as comment>
+                <div class="media mt-2" style="border-bottom: 1px solid gray;">
+                    <div class="media-body">
+                        <h5 class="mt-0">${comment.user.login}</h5>
+                        <p>${comment.text?replace("\r\n","<br>")}</p>
+                        <p class="float-right">${comment.date}</p>
+                        <#if comment.user.login == name>
+                            <p><a href="/stories/${story.id}/comment/delete/${comment.id}">Удалить</a></p>
+                        </#if>
+                    </div>
+                </div>
+            </#list>
+            <#if comments.getTotalPages() != 0>
+                <@p.pager url comments></@>
+            </#if>
+        </div>
+    </div>
+</@structure.page>

@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 import ru.kuznetsov.stories.models.UserStoryMark;
 import ru.kuznetsov.stories.models.UserStoryMarkPK;
 
-import java.util.Optional;
-
 @Repository
 public interface UserStoryMarkDao extends JpaRepository<UserStoryMark,UserStoryMarkPK> {
 

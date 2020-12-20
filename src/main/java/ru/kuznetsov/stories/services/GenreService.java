@@ -9,5 +9,4 @@ import java.util.List;
 public interface GenreService {
     List<Genre> getAllGenres();
     Genre getById(Long id);
-    Genre getByName(String name);
 }
