@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+// почему не приват переменные?
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
