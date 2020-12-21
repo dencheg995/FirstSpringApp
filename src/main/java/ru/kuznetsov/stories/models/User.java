@@ -14,6 +14,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+// code style соблюдать важно
+// аннотации ставить лучше над геттерами
+//@Transient
+//transient private String confirmPassword; - что за сложная запись и для чего?
+
+// в OneToMany лучше List юзать а в ManyToMany set, но мб тебе так по логике нужно поэтому надо это чекать 
+// юзер у тебя ж таблица а где аннотация @Table?
 public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
