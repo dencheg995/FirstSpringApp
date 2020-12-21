@@ -3,6 +3,8 @@ package ru.kuznetsov.stories.models;
 import javax.persistence.*;
 
 @Entity
+
+//@EmbeddedId это ты для поиска типо сделал?
 public class UserStoryMark {
 
     @EmbeddedId
